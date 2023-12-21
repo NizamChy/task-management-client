@@ -1,7 +1,21 @@
-import { FaClipboardList } from "react-icons/fa";
+import { useState } from "react";
+import { FaClipboardList, FaMoon } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { MdOutlineLightMode } from "react-icons/md";
 
 const Navbar = () => {
+  const [theme, setTheme] = useState("dim");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dim" ? "light" : "dim";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    setTheme(newTheme);
+  };
+
+  const getButtonText = () => {
+    return theme === "dim" ? <MdOutlineLightMode /> : <FaMoon />;
+  };
+
   return (
     <div>
       {/* Navbar  */}
@@ -26,8 +40,11 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-md dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-md font-semibold dropdown-content mt-3 z-[1] p-2 pl-4 shadow bg-base-100 rounded-box w-52"
             >
+            <li>
+              <button className="text-2xl mt-1" onClick={toggleTheme}>{getButtonText()}</button>
+            </li>
               <li>
                 <NavLink
                   to="/"
@@ -70,11 +87,11 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">
+          <NavLink to="/" className="btn btn-ghost text-xl">
             {" "}
             <FaClipboardList />
             Task Management
-          </a>
+          </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 text-xl">
@@ -117,6 +134,10 @@ const Navbar = () => {
               >
                 Register
               </NavLink>
+            </li>
+
+            <li>
+              <button className="text-2xl mt-1" onClick={toggleTheme}>{getButtonText()}</button>
             </li>
           </ul>
         </div>
