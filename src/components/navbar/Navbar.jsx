@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FaClipboardList, FaMoon } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa";
+import { LuMoon } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import { MdOutlineLightMode } from "react-icons/md";
 
@@ -13,7 +14,7 @@ const Navbar = () => {
   };
 
   const getButtonText = () => {
-    return theme === "dim" ? <MdOutlineLightMode /> : <FaMoon />;
+    return theme === "dim" ? <MdOutlineLightMode /> : <LuMoon />    ;
   };
 
   return (
@@ -105,6 +106,8 @@ const Navbar = () => {
                 Home
               </NavLink>
             </li>
+
+
             <li>
               <NavLink
                 to="/dashboard"

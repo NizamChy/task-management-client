@@ -29,9 +29,9 @@ const Login = () => {
     // })
   }
 
-  const handleSignin = () => {
-  // const handleSignin = (e) => {
-    // e.preventDefault();
+  
+  const handleSignin = (e) => {
+    e.preventDefault();
     // const form = new FormData(e.currentTarget);
     // const email = form.get("email");
     // const password = form.get("password");

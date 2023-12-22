@@ -5,6 +5,8 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import ErrorPage from "../pages/errorPage/ErrorPage";
+import NewTask from "../pages/newTask/NewTask";
+import PrevTask from "../pages/prevTask/PrevTask";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
+      },
+      {
+        path: "/newtask",
+        element: <NewTask></NewTask>,
+      },
+      {
+        path: "/previoustask",
+        element: <PrevTask></PrevTask>,
       },
       {
         path: "/login",
