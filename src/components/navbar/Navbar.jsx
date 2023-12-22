@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaClipboardList } from "react-icons/fa";
 import { LuMoon } from "react-icons/lu";
 import { NavLink } from "react-router-dom";
 import { MdOutlineLightMode } from "react-icons/md";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("dim");
+
+  const { user, logOut } = useContext(AuthContext);
+
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.log(error));
+  };
 
   const toggleTheme = () => {
     const newTheme = theme === "dim" ? "light" : "dim";
@@ -66,16 +76,26 @@ const Navbar = () => {
                   Dashboard
                 </NavLink>
               </li>
+
+              
+
               <li>
-                <NavLink
-                  to="/login"
-                  className={({ isActive, isPending }) =>
-                    isPending ? "pending" : isActive ? "underline" : ""
-                  }
+              {user ? (
+                <button onClick={handleLogOut} >
+                  Logout
+                </button>
+              ) : (
+                <NavLink to="/login" 
+                className={({ isActive, isPending }) =>
+                isPending ? "pending" : isActive ? "underline" : ""
+              }
                 >
                   Login
                 </NavLink>
-              </li>
+              )}
+            </li>
+
+
               <li>
                 <NavLink
                   to="/register"
@@ -119,14 +139,19 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/login"
+              {user ? (
+                <button onClick={handleLogOut} >
+                  Logout
+                </button>
+              ) : (
+                <NavLink to="/login" 
                 className={({ isActive, isPending }) =>
-                  isPending ? "pending" : isActive ? "underline" : ""
-                }
-              >
-                Login
-              </NavLink>
+                isPending ? "pending" : isActive ? "underline" : ""
+              }
+                >
+                  Login
+                </NavLink>
+              )}
             </li>
             <li>
               <NavLink
@@ -145,39 +170,81 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          {/* profile  */}
-          <div className="dropdown dropdown-end">
+ {/* user  */}
+ <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
+              
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+              {user && user?.photoURL ? (
+                  <img src={user?.photoURL} alt="User Avatar" />
+                ) : (
+                  <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-10 h-10"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                )}
+
               </div>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-            >
+            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
                 <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  {user && (
+                    <span style={{ fontSize: "15px", fontWeight: "500" }}>
+                      {user?.displayName}
+                    </span>
+                  )}
+                  {/* <span className="badge">New</span> */}
                 </a>
               </li>
               <li>
-                <a>Settings</a>
+                {user && (
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "400",
+                      color: "blue",
+                    }}
+                  >
+                    {user?.email}
+                  </span>
+                )}
               </li>
               <li>
-                <a>Logout</a>
+                {user ? (
+                  <button
+                    onClick={handleLogOut}
+                    
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <NavLink
+                    to="/login"
+                   
+                  >
+                    Login
+                  </NavLink>
+                )}
               </li>
             </ul>
           </div>
-          {/* profile end */}
+
+          {/* user  */}
         </div>
       </div>
       {/* Navbar ends */}

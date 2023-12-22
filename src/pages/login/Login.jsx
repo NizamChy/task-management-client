@@ -1,59 +1,60 @@
+//SignIn.jsx file
 import { NavLink } from "react-router-dom";
-// import { useContext } from "react";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { AuthContext } from "../../providers/AuthProvider";
-// import { ToastContainer, toast } from "react-toastify";
-// import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-// import { app } from "../../firebase/firebase.config";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import app from "../../firebase/firebase.config";
+import { AuthContext } from "../../provider/AuthProvider";
 
 
 const Login = () => {
 
-  // const {signIn} = useContext(AuthContext);
-  // const location = useLocation();
-  // const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // const auth = getAuth(app);
-  // const provider = new GoogleAuthProvider();
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
   const handleGoogle = () =>{
     
 
-    // signInWithPopup(auth, provider)
-    // .then(result => {
-    //   const user = result.user;
-    //   console.log(user);
-    //   navigate(location?.state ? location.state : "/");
-    // })
-    // .catch(error => {
-    //   console.log('error', error.message)
-    // })
+    signInWithPopup(auth, provider)
+    .then(result => {
+      const user = result.user;
+      console.log(user);
+      navigate(location?.state ? location.state : "/dashboard");
+    })
+    .catch(error => {
+      console.log('error', error.message)
+    })
   }
 
-  
   const handleSignin = (e) => {
     e.preventDefault();
-    // const form = new FormData(e.currentTarget);
-    // const email = form.get("email");
-    // const password = form.get("password");
+    const form = new FormData(e.currentTarget);
+    const email = form.get("email");
+    const password = form.get("password");
 
-    // signIn(email, password)
-    //   .then((result) => {
-    //     console.log(result.user);
-    //     toast.success("Sign-in successful");
-    //     setTimeout(() => {
-    //       navigate(location?.state ? location.state : "/");
-    //     }, 1000); 
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     toast.error("Sign-in failed. Please check your credentials.");
-    //   });
+    signIn(email, password)
+      .then((result) => {
+        console.log(result.user);
+        toast.success("Sign-in successful");
+        setTimeout(() => {
+          navigate(location?.state ? location.state : "/dashboard");
+        }, 1000); 
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Sign-in failed. Please check your credentials.");
+      });
   };
 
   return (
     <div>
 
-     {/* <ToastContainer /> */}
+     <ToastContainer />
       {/* Sign in */}
       <div>
         <div className="hero mt-16">
@@ -129,21 +130,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-
-
-
-
-
-// const Login = () => {
-//   return (
-//     <div>
-//       <h2 className="text-2xl text-center">Login Page</h2>      
-//     </div>
-//   );
-// };
-
-// export default Login;

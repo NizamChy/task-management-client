@@ -32,12 +32,12 @@ const Dashboard = () => {
             <button className="btn btn-info text-lg">To-do</button>
             content
           </div>
-          <div className="divider lg:divider-horizontal">OR</div>
+          <div className="divider lg:divider-horizontal"></div>
           <div className="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center">
             <button className="btn btn-warning  text-lg">Ongoing</button>
             content
           </div>
-          <div className="divider lg:divider-horizontal">OR</div>
+          <div className="divider lg:divider-horizontal"></div>
           <div className="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center">
             <button className="btn btn-success  text-lg">Completed</button>
             content

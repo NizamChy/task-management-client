@@ -1,119 +1,87 @@
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithPopup, updateProfile } from "firebase/auth";
-// import { app } from "../../firebase/firebase.config";
-// import "react-toastify/dist/ReactToastify.css";
-// import { ToastContainer, toast } from "react-toastify";
-// import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import app from "../../firebase/firebase.config";
+
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../provider/AuthProvider";
 
-const EmployeeRegister = () => {
-  // const [startDate, setStartDate] = useState(null);
-  // const location = useLocation();
-  // const navigate = useNavigate();
+const Register = () => {
+  
+  
+  const { createUser } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // const auth = getAuth(app);
-  // const provider = new GoogleAuthProvider();
-
-  // const axiosPublic = useAxiosPublic();
-
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
   const handleGoogle = () => {
-    // signInWithPopup(auth, provider)
-    //   .then((result) => {
-    //     const user = result.user;
-    //     console.log(user);
-    //     const userInfo = {
-    //       email: result.user?.email,
-    //       name: result.user?.displayName
-    //     }
-    //     axiosPublic.post('/users', userInfo)
-    //     .then(res => {
-    //       console.log(res.data)
-    //     })
-    //     navigate(location?.state ? location.state : "/");
-    //   })
-    //   .catch((error) => {
-    //     console.log("error", error.message);
-    //   });
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        console.log("error", error.message);
+      });
   };
 
-  const handleSignUp = () => {
-  // const handleSignUp = (e) => {
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const userPhoto = form.userPhoto.value;
+    const email = form.email.value;
+    const password = form.password.value;
 
-    // const axiosPublic = useAxiosPublic();
-    // e.preventDefault();
-    // const form = e.target;
-    // const name = form.name.value;
-    // const userPhoto = form.userPhoto.value;
-    // const birthDate = form.birthDate.value;
-    // const email = form.email.value;
-    // const password = form.password.value;
+    const minLength = 6;
+    const hasCapitalLetter = /[A-Z]/.test(password);
+    const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]/.test(
+      password
+    );
 
-    // const minLength = 6;
-    // const hasCapitalLetter = /[A-Z]/.test(password);
-    // const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/\-]/.test(
-    //   password
-    // );
-
-    // if (password.length < minLength) {
-    //   toast.error("Password must be at least 6 characters long.");
-    //   return;
-    // }
-    // if (!hasCapitalLetter) {
-    //   toast.error("Password must contain at least one capital letter.");
-    //   return;
-    // }
-    // if (!hasSpecialCharacter) {
-    //   toast.error("Password must contain at least one special character.");
-    //   return;
-    // }
+    if (password.length < minLength) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+    if (!hasCapitalLetter) {
+      toast.error("Password must contain at least one capital letter.");
+      return;
+    }
+    if (!hasSpecialCharacter) {
+      toast.error("Password must contain at least one special character.");
+      return;
+    }
 
     //   console.log(email, password);
-
-
-
-
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then((result) => {
+    // Create the user with email and password
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
         // Set the displayName for the user
-        // updateProfile(result.user, {
-        //   displayName: name,
-        //   photoURL: userPhoto,
-        //   // birthDate: birthDate,
-        //   email: email,
-        // })
-        //   .then(() => {
-        //     console.log(result.user);
-            //create user entry in the database
-          //   const userInfo = {
-          //     name: name,
-          //     email: email,
-          //   }
-          //   axiosPublic.post('/users', userInfo)
-          //   .then(res => {
-          //     if(res.data.insertedId){
-          //       console.log("user added to database.")
-          //       toast.success("Sign-up successful");
-          //       navigate(location?.state ? location.state : "/");
-    
-          //       // Reload the page after 2 seconds
-          //       setTimeout(() => {
-          //         window.location.reload();
-          //       }, 2000); // 2000 milliseconds = 2 seconds
-          //     }
-          //   })
+        updateProfile(result.user, {
+          displayName: name,
+          photoURL: userPhoto,
+          email: email,
+        })
+          .then(() => {
+            console.log(result.user);
+            toast.success("Sign-up successful");
+            navigate(location?.state ? location.state : "/");
 
+            // Reload the page after 2 seconds
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000); // 2000 milliseconds = 2 seconds
+          })
+          .catch((error) => {
+            console.error("Error updating displayName: ", error);
+          });
 
-          // })
-          // .catch((error) => {
-          //   console.error("Error updating displayName: ", error);
-          // });
-
-          
-          // this will be commented
         // new user has been created
         // const createdAt = result.user.metadata?.creationTime;
 
@@ -131,23 +99,16 @@ const EmployeeRegister = () => {
         //       console.log("user added to the database");
         //     }
         //   });
-
-        // this will be commented end
-
-
-
-
-      // })
-      // .catch((error) => {
-      //   console.error(error);
-      //   toast.error(error.message);
-      // });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
+      });
   };
-  
 
   return (
     <div className="min-h-[100vh]">
-      {/* <ToastContainer /> */}
+      <ToastContainer />
       {/* Sign up */}
       <div>
         <div className="hero">
@@ -304,7 +265,7 @@ const EmployeeRegister = () => {
   );
 };
 
-export default EmployeeRegister;
+export default Register;
 
 // const Register = () => {
 //   return (
